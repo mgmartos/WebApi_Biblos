@@ -3,6 +3,9 @@ using System.Net;
 using System.Web.Http;
 using System.Threading;
 using WebAPI_Biblos.Models;
+using System.Collections.Generic;
+using System.Linq;
+
 
 
 namespace WebAPI_Biblos.Controllers
@@ -36,17 +39,30 @@ namespace WebAPI_Biblos.Controllers
             if (login == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
-            //TODO: Validate credentials Correctly, this code is only for demo !!
-            bool isCredentialValid = (login.PassWord == "123456");
-            if (isCredentialValid)
-            {
-                var token = TokenGenerator.GenerateTokenJwt(login.UserName);
-                return Ok(token);
-            }
-            else
+            biblosEntities1 entidad = new biblosEntities1();
+            Cifra cifrador = new Cifra();
+            string pass = cifrador.Cifrar(login.PassWord);
+            string nopass = cifrador.Descifrar(pass);
+            var usu = entidad.Usuarios.Where(u => u.Nombre.Equals(login.UserName)).FirstOrDefault();
+            if ((pass != usu.Password) || (usu.FechaAutorizado < DateTime.Today))
             {
                 return Unauthorized();
             }
+            var token = TokenGenerator.GenerateTokenJwt(login.UserName);
+                return Ok(token);
+
+
+            //TODO: Validate credentials Correctly, this code is only for demo !!
+            //bool isCredentialValid = (login.PassWord == "123456");
+            //if (isCredentialValid)
+            //{
+            //    var token = TokenGenerator.GenerateTokenJwt(login.UserName);
+            //    return Ok(token);
+            //}
+            //else
+            //{
+            //    return Unauthorized();
+            //}
         }
     }
 
