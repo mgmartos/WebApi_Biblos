@@ -25,6 +25,11 @@ namespace WebAPI_Biblos
                routeTemplate: "api/{controller}/{porletra}/{letra}",
                defaults: new { letra = RouteParameter.Optional }
            );
+          //  config.Routes.MapHttpRoute(
+          //    name: "DefaultApiTemas",
+          //    routeTemplate: "api/{controller}/temas",
+          //    defaults: null
+          //);
         }
     }
 }

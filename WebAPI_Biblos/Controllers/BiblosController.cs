@@ -33,6 +33,13 @@ namespace WebAPI_Biblos.Controllers
             List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(letra.ToUpper())).ToList();
             return Ok(ooo);
         }
+        [HttpGet]
+        [Route("temas")]
+        public IHttpActionResult Get()
+        {
+            IEnumerable<string> ltemas = entidad.mlibs.Select(l => l.tema.Trim()).Distinct().OrderBy(s => s).ToList();
+            return Ok(ltemas);
+        }
 
     }
 }
