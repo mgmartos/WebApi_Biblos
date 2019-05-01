@@ -40,7 +40,7 @@ namespace WebAPI_Biblos.Controllers
             IEnumerable<string> ltemas = entidad.mlibs.Select(l => l.tema.Trim()).Distinct().OrderBy(s => s).ToList();
             return Ok(ltemas);
         }
-        //Marca Local
+        //Marca Local II
 
     }
 }
