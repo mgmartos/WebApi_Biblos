@@ -21,10 +21,13 @@ namespace WebAPI_Biblos.Controllers
         }
 
         [HttpGet]
+        [Route("todos")]
         public IHttpActionResult GetAll()
         {
-            List<mlib> ooo = entidad.mlibs.ToList();
-            return Ok(ooo);
+           // List<mlib> ooo = entidad.mlibs.ToList();
+            IEnumerable<mlib> oooo = entidad.mlibs.ToList();
+
+            return Ok(oooo);
         }
 
         [HttpGet]
