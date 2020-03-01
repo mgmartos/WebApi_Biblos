@@ -31,7 +31,8 @@ namespace WebAPI_Biblos.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetLibrosLetra(string letra)
+        [Route("LibrosLetra")]
+        public IHttpActionResult PostLibrosLetra(string letra)
         {
             List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(letra.ToUpper())).ToList();
             return Ok(ooo);
@@ -43,6 +44,22 @@ namespace WebAPI_Biblos.Controllers
             IEnumerable<string> ltemas = entidad.mlibs.Select(l => l.tema.Trim()).Distinct().OrderBy(s => s).ToList();
             return Ok(ltemas);
         }
+
+        [HttpGet]
+        [Route("inicio")]
+        public IHttpActionResult GetCantidades()
+        {
+            var ListaCantidades = new List<string>();
+            ListaCantidades.Add(entidad.mlibs.Count().ToString()); 
+            ListaCantidades.Add(entidad.Autores.Count().ToString());
+            ListaCantidades.Add(entidad.mlibs.Select(l => l.editorial.Trim()).Distinct().OrderBy(s => s).ToList().Count.ToString());
+            IEnumerable<string> cantidades = ListaCantidades;
+            return Ok(cantidades);            
+        }
+
+
+
+
         //Marca Local II
 
     }
