@@ -10,4 +10,14 @@ namespace WebAPI_Biblos.Models
         public string UserName { get; set;}
         public string PassWord { get; set;}
     }
+
+    public class cletra
+    {
+        public string letra { get; set; }
+    }
+    public class Param
+    {
+        public string parametro { get; set; }
+    }
+
 }

@@ -14,6 +14,7 @@ namespace WebAPI_Biblos.Controllers
     {
         biblosEntities1 entidad = new biblosEntities1();
         [HttpGet]
+        [Route("libro")]
         public IHttpActionResult GetLibro(int id)
         {
             mlib ooo = entidad.mlibs.Where(l => l.idLibro.Equals(id)).FirstOrDefault();
@@ -30,13 +31,25 @@ namespace WebAPI_Biblos.Controllers
             return Ok(oooo);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("LibrosLetra")]
-        public IHttpActionResult PostLibrosLetra(string letra)
+        public IHttpActionResult PostLibrosLetra(cletra let)
         {
-            List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(letra.ToUpper())).ToList();
+
+            List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(let.letra.ToUpper())).ToList();
             return Ok(ooo);
         }
+
+        //[HttpPost]
+        //[Route("LibrosAutor")]
+        //public IHttpActionResult PostLibrosAutor(int codigo)
+        //{
+
+        //    List<mlib> ooo = entidad.mlibs.Where(l => l.CodAutor.Equals(codigo)).ToList();
+        //    return Ok(ooo);
+        //}
+
+
         [HttpGet]
         [Route("temas")]
         public IHttpActionResult Get()
@@ -56,11 +69,5 @@ namespace WebAPI_Biblos.Controllers
             IEnumerable<string> cantidades = ListaCantidades;
             return Ok(cantidades);            
         }
-
-
-
-
-        //Marca Local II
-
     }
 }
