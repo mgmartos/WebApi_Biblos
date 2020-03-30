@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using WebAPI_Biblos.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WebAPI_Biblos.Controllers
 {
@@ -69,5 +71,22 @@ namespace WebAPI_Biblos.Controllers
             IEnumerable<string> cantidades = ListaCantidades;
             return Ok(cantidades);            
         }
+
+
+        [HttpPost]
+        [Route("altalibro")]
+        public string PostInsertLibro(cletra let)
+        {
+
+            JObject o = JObject.Parse(let.letra);
+            string titulo = (string)o["titulo"];
+            mlib libro = o.ToObject<mlib>();
+            mlib res = entidad.mlibs.Add(libro);
+            entidad.SaveChanges();
+            return res.idLibro.ToString();
+        }
+
+        
+
     }
 }
