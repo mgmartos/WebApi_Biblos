@@ -7,6 +7,7 @@ using System.Web.Http;
 using WebAPI_Biblos.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
 
 namespace WebAPI_Biblos.Controllers
 {
@@ -77,13 +78,41 @@ namespace WebAPI_Biblos.Controllers
         [Route("altalibro")]
         public string PostInsertLibro(cletra let)
         {
-
+          
             JObject o = JObject.Parse(let.letra);
             string titulo = (string)o["titulo"];
             mlib libro = o.ToObject<mlib>();
-            mlib res = entidad.mlibs.Add(libro);
-            entidad.SaveChanges();
-            return res.idLibro.ToString();
+            string codigo = "";
+
+            mlib ooo = entidad.mlibs.Where(l => l.idLibro.Equals(libro.idLibro)).FirstOrDefault();
+            if (ooo == null)
+            { 
+                mlib res = entidad.mlibs.Add(libro);    
+                entidad.SaveChanges();
+                codigo = res.idLibro.ToString();        
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    mlib orig = (from x in entidad.mlibs
+                                 where x.idLibro == libro.idLibro
+                                 select x).First();
+                    Type mtype = orig.GetType(); PropertyInfo[] m_propiedades_orig = mtype.GetProperties();
+                    Type mtype_def = libro.GetType(); PropertyInfo[] m_propiedades_def = mtype_def.GetProperties();
+
+                    for (int i = 0; i < m_propiedades_orig.Count(); i++)
+                    {
+                        m_propiedades_orig[i].SetValue(orig, m_propiedades_def[i].GetValue(libro));
+
+                    }
+
+                    entidad.SaveChanges();
+                    codigo = orig.idLibro.ToString();
+                }
+
+            }
+            return codigo;
         }
 
         
