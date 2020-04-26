@@ -115,7 +115,28 @@ namespace WebAPI_Biblos.Controllers
             return codigo;
         }
 
-        
+        [HttpPost]
+        [Route("altalink")]
+        public string PostInsertLink(cletra let)
+        {
+
+            JObject o = JObject.Parse(let.letra);
+            Url link = o.ToObject<Url>();     
+            Url res = entidad.Urls.Add(link);
+            entidad.SaveChanges();
+            string dir = res.direccion.ToString();
+            return dir;
+        }
+
+        [HttpGet]
+        [Route("enlaces")]
+        public IHttpActionResult GetEnlaces(int tipo, int padre)
+        {
+
+            var link = from l in entidad.Urls where l.tipo == tipo && l.codigo_padre == padre select l;
+            return Ok(link);
+        }
+
 
     }
 }
