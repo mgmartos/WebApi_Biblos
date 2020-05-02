@@ -12,6 +12,25 @@
           <Property Name="idAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NombreAutor" Type="nchar" MaxLength="50" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'biblos.dbo.Lecturas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="Lecturas">
+          <Key>
+            <PropertyRef Name="titulo" />
+            <PropertyRef Name="autor" />
+            <PropertyRef Name="CodAutor" />
+            <PropertyRef Name="calificacion" />
+            <PropertyRef Name="comentario" />
+            <PropertyRef Name="Ebook" />
+          </Key>
+          <Property Name="titulo" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="autor" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="CodAutor" Type="int" Nullable="false" />
+          <Property Name="fecha" Type="datetime" />
+          <Property Name="calificacion" Type="int" Nullable="false" />
+          <Property Name="comentario" Type="nchar" MaxLength="255" Nullable="false" />
+          <Property Name="Ebook" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="mlib">
           <Key>
             <PropertyRef Name="idLibro" />
@@ -74,6 +93,17 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Urls" EntityType="Self.Urls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lecturas" EntityType="Self.Lecturas" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Lecturas].[titulo] AS [titulo], 
+    [Lecturas].[autor] AS [autor], 
+    [Lecturas].[CodAutor] AS [CodAutor], 
+    [Lecturas].[fecha] AS [fecha], 
+    [Lecturas].[calificacion] AS [calificacion], 
+    [Lecturas].[comentario] AS [comentario], 
+    [Lecturas].[Ebook] AS [Ebook]
+    FROM [dbo].[Lecturas] AS [Lecturas]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -124,11 +154,12 @@
           <EntitySet Name="Roles" EntityType="biblosModel.Role" />
           <EntitySet Name="Usuarios" EntityType="biblosModel.Usuario" />
           <FunctionImport Name="SelectAutoresLetra" ReturnType="Collection(biblosModel.SelectAutoresLetra_Result)">
-            <Parameter Name="nombre" Mode="In" Type="String" />
+          <Parameter Name="nombre" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SelectLibrosPorLetra" ReturnType="Collection(biblosModel.SelectLibrosPorLetra_Result)">
-            <Parameter Name="nombre" Mode="In" Type="String" />
+          <Parameter Name="nombre" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Lecturas" EntityType="biblosModel.Lectura" />
         </EntityContainer>
         <EntityType Name="Role">
           <Key>
@@ -173,6 +204,23 @@
           <Property Type="Int32" Name="CodAutor" Nullable="false" />
           <Property Type="Int32" Name="urs" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Lectura">
+          <Key>
+            <PropertyRef Name="titulo" />
+            <PropertyRef Name="autor" />
+            <PropertyRef Name="CodAutor" />
+            <PropertyRef Name="calificacion" />
+            <PropertyRef Name="comentario" />
+            <PropertyRef Name="Ebook" />
+          </Key>
+          <Property Name="titulo" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="autor" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="CodAutor" Type="Int32" Nullable="false" />
+          <Property Name="fecha" Type="DateTime" Precision="3" />
+          <Property Name="calificacion" Type="Int32" Nullable="false" />
+          <Property Name="comentario" Type="String" Nullable="false" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="Ebook" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -271,6 +319,19 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Lecturas">
+            <EntityTypeMapping TypeName="biblosModel.Lectura">
+              <MappingFragment StoreEntitySet="Lecturas">
+                <ScalarProperty Name="Ebook" ColumnName="Ebook" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="calificacion" ColumnName="calificacion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="CodAutor" ColumnName="CodAutor" />
+                <ScalarProperty Name="autor" ColumnName="autor" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -32,6 +32,7 @@ namespace WebAPI_Biblos
         public virtual DbSet<Url> Urls { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Lectura> Lecturas { get; set; }
     
         public virtual ObjectResult<SelectAutoresLetra_Result> SelectAutoresLetra(string nombre)
         {

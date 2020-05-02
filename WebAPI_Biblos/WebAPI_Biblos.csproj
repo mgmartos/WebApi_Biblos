@@ -149,6 +149,9 @@
       <DependentUpon>ModelBiblos.edmx</DependentUpon>
     </Compile>
     <Compile Include="AutoresL.cs" />
+    <Compile Include="Lectura.cs">
+      <DependentUpon>ModelBiblos.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role.cs">

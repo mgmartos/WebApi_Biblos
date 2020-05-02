@@ -138,5 +138,47 @@ namespace WebAPI_Biblos.Controllers
         }
 
 
+
+
+        [HttpPost]
+        [Route("altalectura")]
+        public string PostInsertLectura(cletra let)
+        {
+            string codigo = "";
+            JObject o = JObject.Parse(let.letra);
+            string titulo = (string)o["titulo"];
+            Lectura leido = o.ToObject<Lectura>();
+           
+
+            Lectura ooo = entidad.Lecturas.Where(l => l.titulo.Equals(leido.titulo)).FirstOrDefault();
+            if (ooo == null)
+            {
+                Lectura res = entidad.Lecturas.Add(leido);
+                entidad.SaveChanges();
+                codigo = res.titulo.ToString();
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    Lectura orig = (from x in entidad.Lecturas
+                                 where x.titulo == leido.titulo
+                                 select x).First();
+                    Type mtype = orig.GetType(); PropertyInfo[] m_propiedades_orig = mtype.GetProperties();
+                    Type mtype_def = leido.GetType(); PropertyInfo[] m_propiedades_def = mtype_def.GetProperties();
+
+                    for (int i = 0; i < m_propiedades_orig.Count(); i++)
+                    {
+                        m_propiedades_orig[i].SetValue(orig, m_propiedades_def[i].GetValue(leido));
+
+                    }
+
+                    entidad.SaveChanges();
+                    codigo = orig.titulo.ToString();
+                }
+            }
+            return codigo;
+        }
+
     }
 }
