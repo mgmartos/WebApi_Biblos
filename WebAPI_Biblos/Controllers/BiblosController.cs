@@ -38,7 +38,11 @@ namespace WebAPI_Biblos.Controllers
         [Route("LibrosLetra")]
         public IHttpActionResult PostLibrosLetra(cletra let)
         {
-
+            if (let.letra.ToUpper().CompareTo("A") < 0  || (let.letra.ToUpper().CompareTo("ZZZZZZZZZZZ") > 0))
+            {
+                List<mlib> oooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).ToList();
+                return Ok(oooo);
+            }
             List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(let.letra.ToUpper())).ToList();
             return Ok(ooo);
         }
@@ -138,47 +142,9 @@ namespace WebAPI_Biblos.Controllers
         }
 
 
+        
 
-
-        [HttpPost]
-        [Route("altalectura")]
-        public string PostInsertLectura(cletra let)
-        {
-            string codigo = "";
-            JObject o = JObject.Parse(let.letra);
-            string titulo = (string)o["titulo"];
-            Lectura leido = o.ToObject<Lectura>();
-           
-
-            Lectura ooo = entidad.Lecturas.Where(l => l.titulo.Equals(leido.titulo)).FirstOrDefault();
-            if (ooo == null)
-            {
-                Lectura res = entidad.Lecturas.Add(leido);
-                entidad.SaveChanges();
-                codigo = res.titulo.ToString();
-            }
-            else
-            {
-                if (ModelState.IsValid)
-                {
-                    Lectura orig = (from x in entidad.Lecturas
-                                 where x.titulo == leido.titulo
-                                 select x).First();
-                    Type mtype = orig.GetType(); PropertyInfo[] m_propiedades_orig = mtype.GetProperties();
-                    Type mtype_def = leido.GetType(); PropertyInfo[] m_propiedades_def = mtype_def.GetProperties();
-
-                    for (int i = 0; i < m_propiedades_orig.Count(); i++)
-                    {
-                        m_propiedades_orig[i].SetValue(orig, m_propiedades_def[i].GetValue(leido));
-
-                    }
-
-                    entidad.SaveChanges();
-                    codigo = orig.titulo.ToString();
-                }
-            }
-            return codigo;
         }
 
+
     }
-}

@@ -12,16 +12,9 @@
           <Property Name="idAutor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NombreAutor" Type="nchar" MaxLength="50" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'biblos.dbo.Lecturas' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Lecturas">
           <Key>
             <PropertyRef Name="titulo" />
-            <PropertyRef Name="autor" />
-            <PropertyRef Name="CodAutor" />
-            <PropertyRef Name="calificacion" />
-            <PropertyRef Name="comentario" />
-            <PropertyRef Name="Ebook" />
           </Key>
           <Property Name="titulo" Type="nchar" MaxLength="50" Nullable="false" />
           <Property Name="autor" Type="nchar" MaxLength="50" Nullable="false" />
@@ -89,21 +82,11 @@ advertencia 6002: La tabla o vista 'biblos.dbo.Lecturas' no tiene definida ningu
         </Function>
         <EntityContainer Name="biblosModelStoreContainer">
           <EntitySet Name="Autores" EntityType="Self.Autores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lecturas" EntityType="Self.Lecturas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mlib" EntityType="Self.mlib" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Urls" EntityType="Self.Urls" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Lecturas" EntityType="Self.Lecturas" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Lecturas].[titulo] AS [titulo], 
-    [Lecturas].[autor] AS [autor], 
-    [Lecturas].[CodAutor] AS [CodAutor], 
-    [Lecturas].[fecha] AS [fecha], 
-    [Lecturas].[calificacion] AS [calificacion], 
-    [Lecturas].[comentario] AS [comentario], 
-    [Lecturas].[Ebook] AS [Ebook]
-    FROM [dbo].[Lecturas] AS [Lecturas]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -207,11 +190,6 @@ advertencia 6002: La tabla o vista 'biblos.dbo.Lecturas' no tiene definida ningu
         <EntityType Name="Lectura">
           <Key>
             <PropertyRef Name="titulo" />
-            <PropertyRef Name="autor" />
-            <PropertyRef Name="CodAutor" />
-            <PropertyRef Name="calificacion" />
-            <PropertyRef Name="comentario" />
-            <PropertyRef Name="Ebook" />
           </Key>
           <Property Name="titulo" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
           <Property Name="autor" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
