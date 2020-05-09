@@ -36,26 +36,63 @@ namespace WebAPI_Biblos.Controllers
 
         [HttpPost]
         [Route("LibrosLetra")]
-        public IHttpActionResult PostLibrosLetra(cletra let)
+        public IHttpActionResult PostLibrosLetra(cletra letr)
         {
-            if (let.letra.ToUpper().CompareTo("A") < 0  || (let.letra.ToUpper().CompareTo("ZZZZZZZZZZZ") > 0))
+            List<mlib> ooo; 
+            
+            if (letr.letra.ToUpper().CompareTo("A") < 0  || (letr.letra.ToUpper().CompareTo("ZZZZZZZZZZZ") > 0))
             {
-                List<mlib> oooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).ToList();
-                return Ok(oooo);
+                ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).ToList();
             }
-            List<mlib> ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(let.letra.ToUpper())).ToList();
-            return Ok(ooo);
+            else
+            {
+            ooo = (from book in entidad.mlibs
+                                 where book.titulo.ToUpper().StartsWith(letr.letra.ToUpper())
+                                    select book).ToList();
+            }
+
+            //var ql = from c in entidad.mlibs join o in entidad.Urls on c.idLibro equals o.codigo_padre into url
+            //         where c.titulo.StartsWith(letr.letra.ToUpper())
+            //         select new { c, urls = url.Count() };
+
+            var ql = from c in ooo join o in entidad.Urls on c.idLibro equals o.codigo_padre into url
+                     //where c.titulo.StartsWith(letr.letra.ToUpper())                    
+                     select new { c, urls = url.Where(u=>u.tipo==1).Count() };
+            return Ok(ql);
+
+            //var q =from c in entidad.mlibs join o in entidad.Urls on c.idLibro equals o.codigo_padre  into url select new { c, urls = url.Count() };
+            ////return Ok(q)
+            ///
+            //ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(letr.letra.ToUpper())).ToList();
+            //var tt = entidad.Database.ExecuteSqlCommand("Select * from mlib where paginas > 200");
+
+            //return Ok(ooo);
         }
 
-        //[HttpPost]
-        //[Route("LibrosAutor")]
-        //public IHttpActionResult PostLibrosAutor(int codigo)
-        //{
+        [HttpPost]
+        [Route("LibrosLetraUrls")]
+        public IHttpActionResult PostLibrosLetraurls(cletra letr)
+        {
+            List<mlib> ooo;
+            if (letr.letra.ToUpper().CompareTo("A") < 0 || (letr.letra.ToUpper().CompareTo("ZZZZZZZZZZZ") > 0))
+            {
+                ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).ToList();
+                return Ok(ooo);
+            }
+            //ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().StartsWith(letr.letra.ToUpper())).ToList();
 
-        //    List<mlib> ooo = entidad.mlibs.Where(l => l.CodAutor.Equals(codigo)).ToList();
-        //    return Ok(ooo);
-        //}
+            ooo = (from book in entidad.mlibs
+                   where book.titulo.ToUpper().StartsWith(letr.letra.ToUpper())
+                   select book).ToList();
 
+            //var tt = entidad.Database.ExecuteSqlCommand("Select * from mlib where paginas > 200");
+
+
+            var q = from c in entidad.mlibs join o in entidad.Urls on c.idLibro equals o.codigo_padre into url select new { c, urls = url.Count() };
+            return Ok(q);
+
+            //return Ok(ooo);
+        }
 
         [HttpGet]
         [Route("temas")]

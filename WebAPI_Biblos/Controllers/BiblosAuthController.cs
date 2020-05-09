@@ -52,7 +52,8 @@ namespace WebAPI_Biblos.Controllers
         AutoresL opera (int id, string nombre)
         {
             var cantidad = entidad.mlibs.Where(c => c.CodAutor == id).Count();
-            return  new AutoresL(id, nombre, cantidad);
+            var urls = entidad.Urls.Where(c => c.codigo_padre == id && c.tipo == 2).Count();
+            return  new AutoresL(id, nombre, cantidad,urls);
         }
 
         [HttpPost]
