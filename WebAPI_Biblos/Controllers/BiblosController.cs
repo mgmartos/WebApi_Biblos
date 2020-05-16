@@ -42,13 +42,13 @@ namespace WebAPI_Biblos.Controllers
             
             if (letr.letra.ToUpper().CompareTo("A") < 0  || (letr.letra.ToUpper().CompareTo("ZZZZZZZZZZZ") > 0))
             {
-                ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).ToList();
+                ooo = entidad.mlibs.Where(l => l.titulo.ToUpper().CompareTo("A") < 0 || l.titulo.ToUpper().CompareTo("ZZZZZZZZZZZZ") > 0).OrderBy(l=>l.titulo).ToList();
             }
             else
             {
             ooo = (from book in entidad.mlibs
                                  where book.titulo.ToUpper().StartsWith(letr.letra.ToUpper())
-                                    select book).ToList();
+                                    select book).OrderBy(l => l.titulo).ToList();
             }
 
             //var ql = from c in entidad.mlibs join o in entidad.Urls on c.idLibro equals o.codigo_padre into url
@@ -57,7 +57,7 @@ namespace WebAPI_Biblos.Controllers
 
             var ql = from c in ooo join o in entidad.Urls on c.idLibro equals o.codigo_padre into url
                      //where c.titulo.StartsWith(letr.letra.ToUpper())                    
-                     select new { c, urls = url.Where(u=>u.tipo==1).Count() };
+                     select new { c, urls = url.Where(u=>u.tipo==1).Count()};
             return Ok(ql);
 
             //var q =from c in entidad.mlibs join o in entidad.Urls on c.idLibro equals o.codigo_padre  into url select new { c, urls = url.Count() };
@@ -147,8 +147,14 @@ namespace WebAPI_Biblos.Controllers
                         m_propiedades_orig[i].SetValue(orig, m_propiedades_def[i].GetValue(libro));
 
                     }
-
+                    try
+                    { 
                     entidad.SaveChanges();
+                    }
+                    catch(Exception ex)
+                    {
+                        string error = ex.Message;
+                    }
                     codigo = orig.idLibro.ToString();
                 }
 
