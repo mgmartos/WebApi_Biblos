@@ -184,8 +184,28 @@ namespace WebAPI_Biblos.Controllers
             return Ok(link);
         }
 
+        [HttpGet]
+        [Route("buscar")]
+        public IHttpActionResult BuscarLibros(string titulo, string autor)
+        {
+            List<mlib> ooo;
+            if (string.IsNullOrEmpty(titulo) || string.IsNullOrEmpty(autor))
+            {
+            ooo = (from book in entidad.mlibs
+                   where ((book.titulo.ToUpper().Contains(titulo.ToUpper())) || (book.autor.ToUpper().Contains(autor.ToUpper())))
+                   select book).ToList();
+            }
+            else
+            {
+                ooo = (from book in entidad.mlibs
+                       where ((book.titulo.ToUpper().Contains(titulo.ToUpper())) && (book.autor.ToUpper().Contains(autor.ToUpper())))
+                       select book).ToList();
+            }
+            return Ok(ooo);
+        }
 
-        
+
+
 
         }
 
