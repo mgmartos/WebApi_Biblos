@@ -25,6 +25,17 @@ namespace WebAPI_Biblos.Controllers
             return Ok(oooo.OrderBy(f =>f.fecha));
         }
 
+        [HttpPost]
+        [Route("Getlectura")]
+        public IHttpActionResult PostLectura(cletra let)
+        {
+            string tit = let.letra;
+            Lectura ooo = entidad.Lecturas.Where(l => l.titulo.Contains(tit)).FirstOrDefault();
+            return Ok(ooo);
+        }
+
+
+
 
         [HttpPost]
         [Route("altalectura")]

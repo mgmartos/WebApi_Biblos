@@ -16,6 +16,7 @@ namespace WebAPI_Biblos.Controllers
     [RoutePrefix("api/biblosauth")]
     public class BiblosAuthController : ApiController
     {
+
         biblosEntities1 entidad = new biblosEntities1();
         [HttpGet]
         [Route("todos")]
