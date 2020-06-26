@@ -24,6 +24,7 @@
           <Property Name="comentario" Type="nchar" MaxLength="255" Nullable="false" />
           <Property Name="Ebook" Type="bit" Nullable="false" />
           <Property Name="fecha_Inicio" Type="datetime" />
+          <Property Name="paginas" Type="int" />
         </EntityType>
         <EntityType Name="mlib">
           <Key>
@@ -200,6 +201,7 @@
           <Property Name="comentario" Type="String" Nullable="false" MaxLength="255" FixedLength="true" Unicode="true" />
           <Property Name="Ebook" Type="Boolean" Nullable="false" />
           <Property Name="fecha_Inicio" Type="DateTime" Precision="3" />
+          <Property Name="paginas" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -302,6 +304,7 @@
           <EntitySetMapping Name="Lecturas">
             <EntityTypeMapping TypeName="biblosModel.Lectura">
               <MappingFragment StoreEntitySet="Lecturas">
+                <ScalarProperty Name="paginas" ColumnName="paginas" />
                 <ScalarProperty Name="fecha_Inicio" ColumnName="fecha_Inicio" />
                 <ScalarProperty Name="Ebook" ColumnName="Ebook" />
                 <ScalarProperty Name="comentario" ColumnName="comentario" />

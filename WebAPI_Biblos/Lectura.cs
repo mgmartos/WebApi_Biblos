@@ -22,6 +22,6 @@ namespace WebAPI_Biblos
         public string comentario { get; set; }
         public bool Ebook { get; set; }
         public Nullable<System.DateTime> fecha_Inicio { get; set; }
-
+        public Nullable<int> paginas { get; set; }
     }
 }
