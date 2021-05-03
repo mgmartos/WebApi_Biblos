@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace WebAPI_Biblos.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [RoutePrefix("api/biblos")]
     public class BiblosController : ApiController
     {
